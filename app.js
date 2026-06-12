@@ -25,10 +25,18 @@ const MongoStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
 
-mongoose.connect(dbUrl);
+// Connect to MongoDB without crashing the process if it's unavailable.
+// The rejected promise is caught here so a missing/unreachable DB only logs
+// a warning instead of taking down the whole server.
+mongoose.connect(dbUrl).catch((err) => {
+    console.error('Initial MongoDB connection failed:', err.message);
+    console.error('The server will keep running, but database-backed features will not work until a valid DB_URL is configured.');
+});
 
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', (err) => {
+    console.error('MongoDB connection error:', err.message);
+});
 db.once('open', () => {
     console.log('Database connected');
 });
@@ -147,7 +155,33 @@ app.all(/(.*)/, (req, res, next) => {
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something went wrong';
-    res.status(statusCode).render('error', { err });
+
+    // If a response has already started, we can't render again — doing so
+    // throws ERR_HTTP_HEADERS_SENT and crashes the process. Delegate to the
+    // default Express handler instead.
+    if (res.headersSent) {
+        return next(err);
+    }
+
+    // Guard the render itself: if rendering the error view fails (e.g. a
+    // template/layout issue), fall back to a plain-text response so the
+    // server never crashes while reporting an error.
+    res.status(statusCode).render('error', { err }, (renderErr, html) => {
+        if (renderErr) {
+            console.error('Failed to render error page:', renderErr.message);
+            if (!res.headersSent) {
+                res.status(statusCode).type('text').send(err.message);
+            }
+            return;
+        }
+        res.send(html);
+    });
+});
+
+// Safety net: keep the process alive if an async error slips through
+// (e.g. a transient database/session-store failure) instead of crashing.
+process.on('unhandledRejection', (reason) => {
+    console.error('Unhandled promise rejection:', reason);
 });
 
 const port = process.env.PORT || 3000;
