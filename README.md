@@ -443,4 +443,8 @@ Built as the capstone project of [The Web Developer Bootcamp](https://www.udemy.
 
 ## 📄 License
 
-This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+This project is licensed under the [![GitHub License](https://img.shields.io/github/license/Dhruvam1111/YelpCamp)](./LICENSE)
+
+
+
