@@ -25,12 +25,18 @@ const MongoStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp';
 
-mongoose.connect(dbUrl);
+mongoose.connect(dbUrl)
+    .then(() => console.log('✅ Database connected'))
+    .catch(err => {
+        console.error('❌ Database connection error:', err.message);
+        console.error('Make sure your MongoDB Atlas cluster is running and the DB_URL in .env is correct.');
+    });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-    console.log('Database connected');
+
+process.on('unhandledRejection', (err) => {
+    console.error('Unhandled Rejection:', err.message);
 });
 
 const app = express();
@@ -92,7 +98,10 @@ const styleSrcUrls = [
     "https://cdn.maptiler.com/", 
 ];
 const connectSrcUrls = [
-    "https://api.maptiler.com/", 
+    "https://api.maptiler.com/",
+    "https://cdn.maptiler.com/",
+    "https://tiles.maptiler.com/",
+    "https://cdn.jsdelivr.net",
 ];
 const fontSrcUrls = [];
 app.use(
@@ -102,7 +111,7 @@ app.use(
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-            workerSrc: ["'self'", "blob:"],
+            workerSrc: ["'self'", "blob:", "https://cdn.maptiler.com/"],
             objectSrc: [],
             imgSrc: [
                 "'self'",
@@ -111,6 +120,8 @@ app.use(
                 "https://res.cloudinary.com/didu3onhs/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
                 "https://images.unsplash.com/",
                 "https://api.maptiler.com/",
+                "https://tiles.maptiler.com/",
+                "https://cdn.maptiler.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
@@ -152,5 +163,7 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    console.log(`🚀 Server is running on port ${port}`);
 });
+
+module.exports = app;

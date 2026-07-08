@@ -30,7 +30,20 @@
 <% } %>
 <script>
     const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';
-    const campgrounds = { features: <%- JSON.stringify(campgrounds) %> };
+    const mapData = <%- JSON.stringify(campgrounds) %>;
+    const campgrounds = {
+        type: "FeatureCollection",
+        features: mapData
+            .filter(c => c.geometry && c.geometry.coordinates)
+            .map(c => ({
+                type: "Feature",
+                geometry: c.geometry,
+                properties: {
+                    popUpMarkup: `<strong><a href="/campgrounds/${c._id}">${c.title}</a></strong><p>${c.description ? c.description.substring(0, 40) + '...' : ''}</p>`
+                }
+            }))
+    };
+    console.log('Map data loaded:', campgrounds.features.length, 'campgrounds with geometry');
 </script>
 
 <script src="/javascripts/clusterMap.js"></script>
