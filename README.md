@@ -2,7 +2,7 @@
 
 A full-stack web application for discovering and reviewing campgrounds — built as the capstone project of **Colt Steele's Web Developer Bootcamp**. Users can browse campgrounds on an interactive map, create listings with photos, and leave star-rated reviews.
 
-**Live Demo:** [Deployed on Railway] *yelpcamp-production-fed3.up.railway.app*
+**Live Demo:** [Deployed on Railway](yelpcamp-production-fed3.up.railway.app)
 
 ---
 
