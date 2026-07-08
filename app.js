@@ -60,7 +60,7 @@ const store = MongoStore.create({
     }
 });
 
-store.on('error', function(e){
+store.on('error', function (e) {
     console.log('SESSION STORE ERROR', e);
 })
 
@@ -72,7 +72,7 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        // secure: true,
+        secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -87,7 +87,7 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/", 
+    "https://cdn.maptiler.com/",
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -95,7 +95,7 @@ const styleSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/", 
+    "https://cdn.maptiler.com/",
 ];
 const connectSrcUrls = [
     "https://api.maptiler.com/",
@@ -129,7 +129,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
