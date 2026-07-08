@@ -8,19 +8,19 @@ A full-stack web application for discovering and reviewing campgrounds — built
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Architecture Overview](#architecture-overview)
-- [Project Structure](#project-structure)
-- [How Key Features Work](#how-key-features-work)
-- [API Routes](#api-routes)
-- [Database Schema](#database-schema)
-- [Security Measures](#security-measures)
-- [Local Setup](#local-setup)
-- [Environment Variables](#environment-variables)
-- [Deployment on Railway](#deployment-on-railway)
-- [Common Issues & Fixes](#common-issues--fixes)
-- [What I Learned](#what-i-learned)
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Architecture Overview](#️-architecture-overview)
+- [Project Structure](#-project-structure)
+- [How Key Features Work](#️-how-key-features-work)
+- [API Routes](#️-api-routes)
+- [Database Schema](#️-database-schema)
+- [Security Measures](#-security-measures)
+- [Local Setup](#-local-setup)
+- [Environment Variables](#-environment-variables)
+- [Deployment on Railway](#-deployment-on-railway)
+- [Common Issues & Fixes](#-common-issues--fixes)
+- [What I Learned](#-what-i-learned)
 
 ---
 
@@ -444,7 +444,9 @@ Built as the capstone project of [The Web Developer Bootcamp](https://www.udemy.
 ## 📄 License
 
 
-This project is licensed under the [![GitHub License](https://img.shields.io/github/license/Dhruvam1111/YelpCamp)](./LICENSE)
+This project is licensed under the [MIT License](./LICENSE).
+
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 
 
